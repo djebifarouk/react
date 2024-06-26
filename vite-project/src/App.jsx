@@ -27,6 +27,7 @@ function App() {
     lastname:'djebbi',
     age:18
   });
+const [showStockedOnly,setshowStockedOnly] = useState(false);
 
   const handler = (e) => {
 console.log(e);
@@ -51,7 +52,7 @@ const increment =()=> {
   <button onClick={increment}>conter</button>
 
   <h2>exemple 2</h2>
-  <SearchBar/>
+  <SearchBar showStockedOnly={showStockedOnly} onStockedOnlyChange={setshowStockedOnly}/>
   <ProductTable products={PRODUCTS}/>
   </>
   
@@ -59,11 +60,11 @@ const increment =()=> {
 function TitleF({ color,children }) {
   return <h1 style={{ color: color }}>{children}</h1>;
 }
-function SearchBar(){
+function SearchBar({showStockedOnly, onStockedOnlyChange}){
   return <div>
     <div className="mb-3">
       <Input value="" onChange={() => null} placeholder="Rechercher..."/>
-      <Checkbox id="stocked" checked={false} onChange={(e) => null} label="En stock"/>
+      <Checkbox id="stocked" checked={showStockedOnly} onChange={onStockedOnlyChange} label="En stock"/>
     </div>
   </div>
 }
