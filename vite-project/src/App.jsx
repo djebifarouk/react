@@ -4,6 +4,8 @@ import { Checkbox } from "./components/forms/Checkbox";
 import { Input } from "./components/forms/input";
 import {ProdutCategoryRow} from "./components/products/ProdutCategoryRow";
 import {ProductRow} from "./components/products/ProductRow";
+import {Range} from "./components/forms/Range";
+
 const title = "Bonjour mes amies"
 const className="classeName"
 const todo = [
@@ -13,12 +15,12 @@ const todo = [
 ]
 
 const PRODUCTS=[
-  {category: "Fruits", price: "$1", stocked: true, name: "Apple"},
-  {category: "Fruits", price: "$1", stocked: true, name: "Dragonfruit"},
-  {category: "Fruits", price: "$1", stocked: false, name: "Passionfruit"},
-  {category: "Vegetables", price: "$11", stocked: true, name: "Spinach"},
-  {category: "Vegetables", price: "$9", stocked: false, name: "Pumpkin"},
-  {category: "Vegetables", price: "$4", stocked: true, name: "Peas"}
+  {category: "Fruits", price: "1", stocked: true, name: "Apple"},
+  {category: "Fruits", price: "1", stocked: true, name: "Dragonfruit"},
+  {category: "Fruits", price: "1", stocked: false, name: "Passionfruit"},
+  {category: "Vegetables", price: "11", stocked: true, name: "Spinach"},
+  {category: "Vegetables", price: "9", stocked: false, name: "Pumpkin"},
+  {category: "Vegetables", price: "4", stocked: true, name: "Peas"}
 ]
 
 function App() {
@@ -29,7 +31,7 @@ function App() {
   });
 const [showStockedOnly,setshowStockedOnly] = useState(false);
 const [search,setSearch] = useState('')
-
+const [maxPrice,setmaxPrice] = useState(20)
   const handler = (e) => {
 console.log(e);
     alert(e.currentTarget.textContent);
@@ -39,6 +41,10 @@ console.log(e);
       return false;
     }
     if(search && !product.name.includes(search)){
+      return false;
+    }
+    console.log(maxPrice);
+    if(maxPrice && product.price > maxPrice){
       return false;
     }
     return true;
@@ -62,7 +68,7 @@ const increment =()=> {
   <button onClick={increment}>conter</button>
 
   <h2>exemple 2</h2>
-  <SearchBar showStockedOnly={showStockedOnly} onStockedOnlyChange1={setshowStockedOnly} search={search} onSearchChange={setSearch}/>
+  <SearchBar showStockedOnly={showStockedOnly} onStockedOnlyChange1={setshowStockedOnly} search={search} onSearchChange={setSearch} maxPrice={maxPrice} onChangeRange={setmaxPrice}/>
   <ProductTable products={visibleProduct}/>
   </>
   
@@ -70,12 +76,12 @@ const increment =()=> {
 function TitleF({ color,children }) {
   return <h1 style={{ color: color }}>{children}</h1>;
 }
-function SearchBar({showStockedOnly, onStockedOnlyChange1,search,onSearchChange}){
+function SearchBar({showStockedOnly, onStockedOnlyChange1,search,onSearchChange,maxPrice,onChangeRange}){
   return <div>
     <div className="mb-3">
       <Input value={search} onChange={onSearchChange} placeholder="Rechercher..."/>
       <Checkbox id="stocked" checked={showStockedOnly} onChange={onStockedOnlyChange1} label="En stock"/>
-      <input type="range" className="form-range" min="1" max="10"/>
+      <Range onChange={onChangeRange} value={maxPrice} min="1" max="20"  />
     </div>
   </div>
 }
