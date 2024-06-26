@@ -28,11 +28,21 @@ function App() {
     age:18
   });
 const [showStockedOnly,setshowStockedOnly] = useState(false);
+const [search,setSearch] = useState('')
 
   const handler = (e) => {
 console.log(e);
     alert(e.currentTarget.textContent);
   }
+  const visibleProduct = PRODUCTS.filter(product => {
+    if(showStockedOnly && !product.stocked){
+      return false;
+    }
+    if(search && !product.name.includes(search)){
+      return false;
+    }
+    return true;
+  })
 const increment =()=> {
   setage({...persone, age: persone.age+1 })
   // setcompt((compte) => compte + 1)
@@ -52,19 +62,20 @@ const increment =()=> {
   <button onClick={increment}>conter</button>
 
   <h2>exemple 2</h2>
-  <SearchBar showStockedOnly={showStockedOnly} onStockedOnlyChange={setshowStockedOnly}/>
-  <ProductTable products={PRODUCTS}/>
+  <SearchBar showStockedOnly={showStockedOnly} onStockedOnlyChange1={setshowStockedOnly} search={search} onSearchChange={setSearch}/>
+  <ProductTable products={visibleProduct}/>
   </>
   
 }
 function TitleF({ color,children }) {
   return <h1 style={{ color: color }}>{children}</h1>;
 }
-function SearchBar({showStockedOnly, onStockedOnlyChange}){
+function SearchBar({showStockedOnly, onStockedOnlyChange1,search,onSearchChange}){
   return <div>
     <div className="mb-3">
-      <Input value="" onChange={() => null} placeholder="Rechercher..."/>
-      <Checkbox id="stocked" checked={showStockedOnly} onChange={onStockedOnlyChange} label="En stock"/>
+      <Input value={search} onChange={onSearchChange} placeholder="Rechercher..."/>
+      <Checkbox id="stocked" checked={showStockedOnly} onChange={onStockedOnlyChange1} label="En stock"/>
+      <input type="range" className="form-range" min="1" max="10"/>
     </div>
   </div>
 }
